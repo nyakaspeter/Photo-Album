@@ -13,7 +13,10 @@ import { SnackbarService } from '../snackbar/snackbar.service';
 export class CommentsComponent implements OnInit {
   public image_id: number;
   public comments: CommentDto[] = [];
+  public uploader_id: number;
   comment: string = '';
+
+  user_id: string;
 
   constructor(
     private modalService: ModalService,
@@ -21,9 +24,15 @@ export class CommentsComponent implements OnInit {
     private imageClient: ImageClient,
     private snackbarService: SnackbarService,
     public dialogRef: MatDialogRef<CommentsComponent>
-  ) {}
+  ) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.user_id = this.credentialsService.credentials.id;
+  }
+
+  canDelete(commenter_id: number) {
+    return this.user_id === commenter_id.toString() || this.user_id === this.uploader_id.toString();
+  }
 
   onDeleteComment(id: number): void {
     this.modalService

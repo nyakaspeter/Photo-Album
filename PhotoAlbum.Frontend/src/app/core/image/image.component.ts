@@ -34,6 +34,7 @@ export class ImageComponent implements OnInit {
     });
     dialogRef.componentInstance.image_id = this.image.id;
     dialogRef.componentInstance.comments = this.image.comments;
+    dialogRef.componentInstance.uploader_id = this.image.uploader.id;
   }
 
   editImage(): void {

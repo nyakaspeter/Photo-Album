@@ -13,7 +13,7 @@
           {{ comment.text }}
         </p>
       </mat-card-content>
-      <div *ngIf="credentialsService.isAdmin()" style="text-align: end">
+      <div *ngIf="canDelete(comment.commenter.id)" style="text-align: end">
         <button
           mat-icon-button
           matTooltip="Delete"
