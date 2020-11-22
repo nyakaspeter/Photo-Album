@@ -31,7 +31,9 @@ export class AlbumComponent implements OnInit {
 
   @Output() albumDeleted: EventEmitter<number> = new EventEmitter();
 
-  searchValue: String;
+  titleFilter: String = "";
+  locationFilter: String = "";
+  tagFilter: String = "";
   filteredImages: ImageDto[];
 
   constructor(
@@ -40,19 +42,40 @@ export class AlbumComponent implements OnInit {
     private albumClient: AlbumClient,
     private snackbarService: SnackbarService,
     public dialog: MatDialog
-  ) {}
+  ) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   ngOnChanges(changes: SimpleChanges) {
     this.filteredImages = changes.album.currentValue.images;
   }
 
-  search(value: String): void {
-    this.searchValue = value;
+  titleFilterChanged(value: String): void {
+    this.titleFilter = value;
+    this.filterImages();
+  }
+
+  locationFilterChanged(value: String): void {
+    this.locationFilter = value;
+    this.filterImages();
+  }
+
+  tagFilterChanged(value: String): void {
+    this.tagFilter = value;
+    this.filterImages();
+  }
+
+  filterImages() {
     this.filteredImages = this.album.images.filter((i) =>
-      i.fileName.toLowerCase().includes(this.searchValue.toLowerCase())
+      i.fileName.toLowerCase().includes(this.titleFilter.toLowerCase()) &&
+      i.location.toLowerCase().includes(this.locationFilter.toLowerCase())
     );
+
+    if (this.tagFilter) {
+      this.filteredImages = this.filteredImages.filter((i) =>
+        i.tags.includes(this.tagFilter.toLowerCase())
+      );
+    }
   }
 
   openImageDialog(image: ImageDto): void {
@@ -64,7 +87,7 @@ export class AlbumComponent implements OnInit {
     });
     dialogRef.componentInstance.image = image;
     dialogRef.componentInstance.owned = this.owned;
-    dialogRef.componentInstance.imageDeleted.subscribe((r) => {
+    dialogRef.componentInstance.imageDeleted.subscribe((r: number) => {
       this.album.images = this.album.images.filter((i) => i.id != r);
       this.filteredImages = this.filteredImages.filter((i) => i.id != r);
       dialogRef.close();
@@ -189,10 +212,10 @@ export class AlbumComponent implements OnInit {
   shareImage(imagePath: string): void {
     this.copyToClipboard(
       window.location.protocol +
-        '//' +
-        window.location.host +
-        '/albums/' +
-        imagePath
+      '//' +
+      window.location.host +
+      '/albums/' +
+      imagePath
     );
     this.snackbarService.openSuccess('Image link copied to clipboard');
   }
@@ -202,10 +225,10 @@ export class AlbumComponent implements OnInit {
       (r) => {
         this.downloadLink(
           window.location.protocol +
-            '//' +
-            window.location.host +
-            '/albums/.zips/' +
-            r
+          '//' +
+          window.location.host +
+          '/albums/.zips/' +
+          r
         );
       },
       (error) => {

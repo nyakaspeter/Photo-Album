@@ -4,18 +4,50 @@
     <span class="spacer"></span>
     <mat-form-field
       style="
-        width: 300px;
+        width: 200px;
         font-size: small;
         margin-top: 8px;
         margin-right: 16px;
         margin-left: 16px;
       "
     >
-      <mat-label>Search</mat-label>
+      <mat-label>Title</mat-label>
       <input
         matInput
-        [ngModel]="searchValue"
-        (ngModelChange)="search($event)"
+        [ngModel]="titleFilter"
+        (ngModelChange)="titleFilterChanged($event)"
+      />
+    </mat-form-field>
+    <mat-form-field
+      style="
+        width: 200px;
+        font-size: small;
+        margin-top: 8px;
+        margin-right: 16px;
+        margin-left: 16px;
+      "
+    >
+      <mat-label>Location</mat-label>
+      <input
+        matInput
+        [ngModel]="locationFilter"
+        (ngModelChange)="locationFilterChanged($event)"
+      />
+    </mat-form-field>
+    <mat-form-field
+      style="
+        width: 200px;
+        font-size: small;
+        margin-top: 8px;
+        margin-right: 16px;
+        margin-left: 16px;
+      "
+    >
+      <mat-label>Tag</mat-label>
+      <input
+        matInput
+        [ngModel]="tagFilter"
+        (ngModelChange)="tagFilterChanged($event)"
       />
     </mat-form-field>
     <button
