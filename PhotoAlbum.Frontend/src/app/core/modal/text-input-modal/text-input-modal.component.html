@@ -2,14 +2,14 @@
 <mat-dialog-content class="mat-typography">
   <mat-form-field style="width: 100%">
     <mat-label>{{ placeholder }}</mat-label>
-    <input matInput [(ngModel)]="text" />
+    <input matInput [(ngModel)]="text" cdkFocusInitial />
   </mat-form-field>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button *ngIf="cancellable" mat-button mat-dialog-close (click)="cancel()">
     {{ cancelText }}
   </button>
-  <button mat-button mat-dialog-close cdkFocusInitial (click)="confirm()">
+  <button mat-button mat-dialog-close (click)="confirm()">
     {{ confirmText }}
   </button>
 </mat-dialog-actions>
