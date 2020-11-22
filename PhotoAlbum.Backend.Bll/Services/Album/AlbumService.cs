@@ -63,7 +63,10 @@ namespace PhotoAlbum.Backend.Bll.Services.Image
 
             var usr = await _userManager.GetUserAsync(_user);
 
-            var user = await _dbContext.Users.Include(u => u.Albums).Include(u => u.Groups).FirstOrDefaultAsync(u => u.Id == usr.Id);
+            var user = await _dbContext.Users
+                .Include(u => u.Albums)
+                .Include(u => u.Groups).ThenInclude(g => g.Group).ThenInclude(g => g.Albums)
+                .FirstOrDefaultAsync(u => u.Id == usr.Id);
 
             foreach (var a in user.Albums)
             {
