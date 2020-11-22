@@ -1,0 +1,17 @@
+<app-album
+  *ngFor="let album of albums"
+  [album]="album"
+  [owned]="true"
+  (albumDeleted)="onAlbumDeleted($event)"
+>
+</app-album>
+
+<button
+  style="position: fixed; right: 24px; bottom: 24px"
+  mat-fab
+  color="accent"
+  matTooltip="Create album"
+  (click)="createAlbum()"
+>
+  <mat-icon>add</mat-icon>
+</button>

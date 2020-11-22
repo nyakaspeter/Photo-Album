@@ -1,0 +1,58 @@
+<div class="container">
+  <img class="image" [src]="'albums/' + image.path" />
+  <div class="overlay">
+    <div class="text">
+      {{ image.fileName }}
+    </div>
+    <div class="bottom-buttons">
+      <a
+        [href]="'albums/' + image.path"
+        download
+        mat-icon-button
+        class="download-button"
+        matTooltip="Download"
+      >
+        <mat-icon>get_app</mat-icon>
+      </a>
+      <button
+        mat-icon-button
+        matTooltip="Comments"
+        (click)="openCommentsDialog()"
+      >
+        <mat-icon>comment</mat-icon>
+      </button>
+      <button
+        *ngIf="owned"
+        mat-icon-button
+        matTooltip="Share link"
+        (click)="shareImage()"
+      >
+        <mat-icon>share</mat-icon>
+      </button>
+      <button
+        *ngIf="owned"
+        mat-icon-button
+        matTooltip="Edit info"
+        (click)="editImage()"
+      >
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button
+        *ngIf="owned"
+        mat-icon-button
+        style="color: rgb(255, 110, 110)"
+        class="delete-button"
+        matTooltip="Delete"
+        (click)="deleteImage()"
+      >
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+
+    <div class="top-buttons">
+      <button mat-icon-button (click)="closeDialog.emit()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </div>
+</div>

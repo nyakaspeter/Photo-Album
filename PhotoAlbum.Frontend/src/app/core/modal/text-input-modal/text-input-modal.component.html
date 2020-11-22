@@ -1,0 +1,15 @@
+<h2 mat-dialog-title *ngIf="!!title">{{ title }}</h2>
+<mat-dialog-content class="mat-typography">
+  <mat-form-field style="width: 100%">
+    <mat-label>{{ placeholder }}</mat-label>
+    <input matInput [(ngModel)]="text" />
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button *ngIf="cancellable" mat-button mat-dialog-close (click)="cancel()">
+    {{ cancelText }}
+  </button>
+  <button mat-button mat-dialog-close cdkFocusInitial (click)="confirm()">
+    {{ confirmText }}
+  </button>
+</mat-dialog-actions>

@@ -1,0 +1,60 @@
+.container {
+  position: relative;
+}
+
+.image {
+  display: block;
+  max-width: 95vw;
+  max-height: 95vh;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  transition: 0.2s ease;
+}
+
+.container:hover .overlay {
+  opacity: 1;
+}
+
+.text {
+  color: white;
+  font-size: 18px;
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  text-shadow: 2px 2px 2px black;
+  max-width: 65%;
+  word-break: break-all;
+}
+
+.bottom-buttons {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
+.bottom-buttons .mat-icon-button {
+  color: white;
+  text-shadow: 2px 2px 2px black;
+  margin: 8px;
+}
+
+.top-buttons {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.top-buttons .mat-icon-button {
+  color: white;
+  text-shadow: 2px 2px 2px black;
+  margin: 8px;
+}

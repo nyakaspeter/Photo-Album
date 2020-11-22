@@ -1,0 +1,148 @@
+<mat-toolbar style="background-color: transparent; margin-bottom: -16px">
+  <mat-toolbar-row>
+    <span>{{ album.name }}</span>
+    <span class="spacer"></span>
+    <mat-form-field
+      style="
+        width: 300px;
+        font-size: small;
+        margin-top: 8px;
+        margin-right: 16px;
+        margin-left: 16px;
+      "
+    >
+      <mat-label>Search</mat-label>
+      <input
+        matInput
+        [ngModel]="searchValue"
+        (ngModelChange)="search($event)"
+      />
+    </mat-form-field>
+    <button
+      *ngIf="owned"
+      mat-mini-fab
+      matTooltip="Upload images"
+      (click)="fileInput.click()"
+      style="margin: 4px"
+    >
+      <mat-icon>publish</mat-icon>
+    </button>
+    <button
+      mat-mini-fab
+      matTooltip="Download album"
+      style="margin: 4px"
+      (click)="downloadAlbum()"
+    >
+      <mat-icon>get_app</mat-icon>
+    </button>
+    <button
+      *ngIf="owned"
+      mat-mini-fab
+      matTooltip="Share album"
+      style="margin: 4px"
+      (click)="shareAlbum()"
+    >
+      <mat-icon>share</mat-icon>
+    </button>
+    <button
+      *ngIf="owned"
+      mat-mini-fab
+      matTooltip="Rename album"
+      style="margin: 4px"
+      (click)="renameAlbum()"
+    >
+      <mat-icon>edit</mat-icon>
+    </button>
+    <button
+      *ngIf="owned"
+      mat-mini-fab
+      matTooltip="Delete album"
+      style="margin: 4px"
+      (click)="deleteAlbum()"
+    >
+      <mat-icon>delete</mat-icon>
+    </button>
+  </mat-toolbar-row>
+</mat-toolbar>
+<div
+  fxLayout="row wrap"
+  style="margin-top: 8px; margin-left: 8px; margin-right: 8px"
+>
+  <div
+    fxFlex="14.28"
+    fxFlex.xl="16.66"
+    fxFlex.lg="20"
+    fxFlex.md="25"
+    fxFlex.sm="33"
+    fxFlex.xs="50"
+    fxFlexAlign="stretch"
+    *ngFor="let item of filteredImages"
+  >
+    <div class="container" style="margin: 8px; height: calc(100% - 16px)">
+      <img
+        class="image mat-elevation-z3"
+        [src]="'albums/' + item.path"
+        style="object-fit: cover; border-radius: 8px; height: 100%"
+      />
+      <div class="overlay" (click)="openImageDialog(item)">
+        <div class="text">
+          {{ item.fileName }}
+        </div>
+        <div class="bottom-buttons">
+          <a
+            [href]="'albums/' + item.path"
+            download
+            mat-icon-button
+            class="download-button"
+            matTooltip="Download"
+            (click)="$event.stopPropagation()"
+          >
+            <mat-icon>get_app</mat-icon>
+          </a>
+          <button
+            mat-icon-button
+            matTooltip="Comments"
+            (click)="$event.stopPropagation(); openCommentsDialog(item)"
+          >
+            <mat-icon>comment</mat-icon>
+          </button>
+          <button
+            *ngIf="owned"
+            mat-icon-button
+            matTooltip="Share link"
+            (click)="$event.stopPropagation(); shareImage(item.path)"
+          >
+            <mat-icon>share</mat-icon>
+          </button>
+        </div>
+
+        <div class="top-buttons" *ngIf="owned">
+          <button
+            mat-icon-button
+            matTooltip="Edit info"
+            (click)="$event.stopPropagation(); editImage(item)"
+          >
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button
+            mat-icon-button
+            style="color: rgb(255, 110, 110)"
+            matTooltip="Delete"
+            (click)="$event.stopPropagation(); deleteImage(item.id)"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<input
+  hidden
+  (change)="uploadImages(fileInput.files); fileInput.value = ''"
+  #fileInput
+  multiple
+  type="file"
+  id="file"
+/>
