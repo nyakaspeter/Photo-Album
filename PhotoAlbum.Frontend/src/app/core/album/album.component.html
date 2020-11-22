@@ -51,6 +51,24 @@
       />
     </mat-form-field>
     <button
+     *ngIf="isListView"
+      mat-mini-fab
+      matTooltip="Grid view"
+      (click)="isListView = !isListView"
+      style="margin: 4px"
+    >
+      <mat-icon>grid_on</mat-icon>
+    </button>
+    <button
+     *ngIf="!isListView"
+      mat-mini-fab
+      matTooltip="List view"
+      (click)="isListView = !isListView"
+      style="margin: 4px"
+    >
+      <mat-icon>list</mat-icon>
+    </button>
+    <button
       *ngIf="owned"
       mat-mini-fab
       matTooltip="Upload images"
@@ -97,6 +115,7 @@
   </mat-toolbar-row>
 </mat-toolbar>
 <div
+  *ngIf="!isListView"
   fxLayout="row wrap"
   style="margin-top: 8px; margin-left: 8px; margin-right: 8px"
 >
@@ -169,6 +188,70 @@
     </div>
   </div>
 </div>
+
+<mat-toolbar *ngIf="isListView" style="background-color: transparent; margin-bottom: -16px;">
+  <mat-toolbar-row *ngFor="let item of filteredImages" style="height: 120px;">
+    <div class="container" style="margin: 8px; height: calc(100% - 16px); width: 200px;">
+      <img
+        class="image mat-elevation-z3"
+        [src]="'albums/' + item.path"
+        style="object-fit: cover; border-radius: 8px; height: 100%"
+      />
+      <div class="overlay" (click)="openImageDialog(item)">
+        <div class="bottom-buttons">
+          <a
+            [href]="'albums/' + item.path"
+            download
+            mat-icon-button
+            class="download-button"
+            matTooltip="Download"
+            (click)="$event.stopPropagation()"
+          >
+            <mat-icon>get_app</mat-icon>
+          </a>
+          <button
+            mat-icon-button
+            matTooltip="Comments"
+            (click)="$event.stopPropagation(); openCommentsDialog(item)"
+          >
+            <mat-icon>comment</mat-icon>
+          </button>
+          <button
+            *ngIf="owned"
+            mat-icon-button
+            matTooltip="Share link"
+            (click)="$event.stopPropagation(); shareImage(item.path)"
+          >
+            <mat-icon>share</mat-icon>
+          </button>
+        </div>
+
+        <div class="top-buttons" *ngIf="owned">
+          <button
+            mat-icon-button
+            matTooltip="Edit info"
+            (click)="$event.stopPropagation(); editImage(item)"
+          >
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button
+            mat-icon-button
+            style="color: rgb(255, 110, 110)"
+            matTooltip="Delete"
+            (click)="$event.stopPropagation(); deleteImage(item.id)"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+    <p> {{ item.fileName }} </p>
+    <span class="spacer"></span>
+    <p> {{ item.uploader.userName }} </p>
+    <p style="margin-left: 20px;"> {{ item.location }} </p>
+    <p style="margin-left: 20px;"> {{ item.date | date: "medium" }} </p>
+  </mat-toolbar-row>
+</mat-toolbar>
 
 <input
   hidden

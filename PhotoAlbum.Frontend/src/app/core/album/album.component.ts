@@ -36,6 +36,8 @@ export class AlbumComponent implements OnInit {
   tagFilter: String = "";
   filteredImages: ImageDto[];
 
+  isListView: boolean = false;
+
   constructor(
     private modalService: ModalService,
     private imageClient: ImageClient,
