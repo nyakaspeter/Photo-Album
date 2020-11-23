@@ -20,7 +20,7 @@ export class TextInputModalComponent implements OnInit {
   ngOnInit() {}
 
   confirm = () => {
-    this.dialogRef.close(this.text);
+    this.dialogRef.close(this.text.trim());
   };
 
   cancel = () => {
