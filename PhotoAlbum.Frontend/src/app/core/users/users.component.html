@@ -1,0 +1,25 @@
+<div style="margin: auto; width: 50%; text-align: center;">
+    <b style="font-size: large;">Manage members of group '{{ group.name }}'</b>
+</div>
+
+<p style="font-size: large">Users ({{ users.length }})</p>
+
+<mat-dialog-content class="mat-typography">
+    <mat-selection-list [(ngModel)]="selectedUserIds">
+        <mat-list-option *ngFor="let user of users" [value]="user.id">
+            <div>
+                <b style="font-size: large;">{{ user.userName }}</b>
+                {{ user.email }}
+            </div>
+        </mat-list-option>
+    </mat-selection-list>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close [mat-dialog-close]="false">
+        Close
+    </button>
+    <button mat-button mat-dialog-close [mat-dialog-close]="true" cdkFocusInitial (click)="save()">
+        Save
+    </button>
+</mat-dialog-actions>

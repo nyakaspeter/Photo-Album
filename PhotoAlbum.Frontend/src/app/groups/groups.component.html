@@ -1,1 +1,42 @@
-<p>groups works!</p>
+<div *ngFor="let group of groups">
+    <mat-toolbar style="background-color: transparent; margin-bottom: -16px">
+        <mat-toolbar-row>
+          <span>{{ group.name }}</span>
+          <span class="spacer"></span>
+          <button
+            mat-mini-fab
+            matTooltip="Manage members"
+            style="margin: 4px"
+            (click)="openUsersDialog(group)"
+          >
+            <mat-icon>people</mat-icon>
+          </button>
+          <button
+            mat-mini-fab
+            matTooltip="Rename group"
+            style="margin: 4px"
+            (click)="renameGroup(group)"
+          >
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button
+            mat-mini-fab
+            matTooltip="Delete group"
+            style="margin: 4px"
+            (click)="deleteGroup(group.id)"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+</div>
+
+<button
+  style="position: fixed; right: 24px; bottom: 24px"
+  mat-fab
+  color="accent"
+  matTooltip="Create group"
+  (click)="createGroup()"
+>
+  <mat-icon>add</mat-icon>
+</button>
