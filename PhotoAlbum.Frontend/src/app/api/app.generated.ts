@@ -1783,6 +1783,96 @@ export class ImageClient {
         return _observableOf<ImageDto>(<any>null);
     }
 
+    editImage(imageEditDto: ImageEditDto, __extras: any = null, __headerOverrides: any = null): Observable<ImageDto> {
+        let url_ = this.baseUrl + "/api/Image";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(imageEditDto);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders(
+                __headerOverrides != null ? __headerOverrides : {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
+                }
+            ),
+            params: new ExtraHttpParams(__extras == null ? {} : __extras )
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processEditImage(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processEditImage(<any>response_);
+                } catch (e) {
+                    return <Observable<ImageDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ImageDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processEditImage(response: HttpResponseBase): Observable<ImageDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ImageDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status === 400) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result400: any = null;
+            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result400 = ErrorDto.fromJS(resultData400);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
+            }));
+        } else if (status === 500) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result500: any = null;
+            let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result500 = ErrorDto.fromJS(resultData500);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result500);
+            }));
+        } else if (status === 401) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result401: any = null;
+            let resultData401 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result401 = ErrorDto.fromJS(resultData401);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result401);
+            }));
+        } else if (status === 403) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result403: any = null;
+            let resultData403 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result403 = ErrorDto.fromJS(resultData403);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result403);
+            }));
+        } else if (status === 404) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result404: any = null;
+            let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result404 = ErrorDto.fromJS(resultData404);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ImageDto>(<any>null);
+    }
+
     deleteImage(imageId?: number | undefined, __extras: any = null, __headerOverrides: any = null): Observable<void> {
         let url_ = this.baseUrl + "/api/Image?";
         if (imageId === null)
@@ -2535,6 +2625,69 @@ export interface IGroupDto {
     id: number;
     name: string;
     users: IUserDto[];
+}
+
+export class ImageEditDto implements IImageEditDto {
+    id!: number;
+    fileName!: string;
+    location!: string;
+    date!: Date;
+    tags!: string[];
+
+    constructor(data?: IImageEditDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.tags = [];
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.fileName = _data["fileName"];
+            this.location = _data["location"];
+            this.date = _data["date"] ? new Date(_data["date"].toString()) : <any>undefined;
+            if (Array.isArray(_data["tags"])) {
+                this.tags = [] as any;
+                for (let item of _data["tags"])
+                    this.tags!.push(item);
+            }
+        }
+    }
+
+    static fromJS(data: any): ImageEditDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ImageEditDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["fileName"] = this.fileName;
+        data["location"] = this.location;
+        data["date"] = this.date ? this.date.toISOString() : <any>undefined;
+        if (Array.isArray(this.tags)) {
+            data["tags"] = [];
+            for (let item of this.tags)
+                data["tags"].push(item);
+        }
+        return data; 
+    }
+}
+
+export interface IImageEditDto {
+    id: number;
+    fileName: string;
+    location: string;
+    date: Date;
+    tags: string[];
 }
 
 export interface FileParameter {
