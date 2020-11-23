@@ -106,9 +106,12 @@ namespace PhotoAlbum.Backend.Bll.Services.Image
             var imagePath = Path.Combine(_imageOptions.RootPath, _imageOptions.FilesPath, image.Album.Path, image.FileName);
             var newImagePath = Path.Combine(_imageOptions.RootPath, _imageOptions.FilesPath, image.Album.Path, imageEditDto.FileName);
 
-            if (File.Exists(imagePath) && !File.Exists(newImagePath))
-                File.Move(imagePath, newImagePath);
-            else throw new PhotoAlbumException($"An image with the name '{imageEditDto.FileName}' already exists in the album");
+            if (imagePath != newImagePath)
+            {
+                if (File.Exists(imagePath) && !File.Exists(newImagePath))
+                    File.Move(imagePath, newImagePath);
+                else throw new PhotoAlbumException($"An image with the name '{imageEditDto.FileName}' already exists in the album");
+            }
 
             image.FileName = imageEditDto.FileName;
             image.Location = imageEditDto.Location;
