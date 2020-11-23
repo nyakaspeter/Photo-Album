@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using PhotoAlbum.Backend.Common.Dtos.Album;
 using PhotoAlbum.Backend.Common.Dtos.Account;
 using System.IO.Compression;
+using Newtonsoft.Json;
 
 namespace PhotoAlbum.Backend.Bll.Services.Image
 {
@@ -50,7 +51,7 @@ namespace PhotoAlbum.Backend.Bll.Services.Image
                     Path = a.Path + "/" + i.FileName, 
                     Date = i.Date, 
                     Location = i.Location, 
-                    Tags = i.Tags.Select(t => t.Text).ToList(), 
+                    Tags = i.Tags == null ? new List<string>() : JsonConvert.DeserializeObject<List<string>>(i.Tags),
                     Comments = i.Comments.Select(c => new CommentDto { Commenter = new UserDto { UserName = c.Commenter.UserName, Email = c.Commenter.Email, Id = c.Commenter.Id }, Date = c.Date, Id = c.Id, Text = c.Text }).ToList(),
                     Uploader = new UserDto { Id = a.Creator.Id, UserName = a.Creator.UserName, Email = a.Creator.Email}
                 }).ToList()
@@ -72,7 +73,6 @@ namespace PhotoAlbum.Backend.Bll.Services.Image
             {
                 var album = await _dbContext.Albums
                     .Include(al => al.Creator)
-                    .Include(al => al.Images).ThenInclude(i => i.Tags)
                     .Include(al => al.Images).ThenInclude(i => i.Comments).ThenInclude(c => c.Commenter)
                     .FirstOrDefaultAsync(al => al.Id == a.AlbumId);
 
@@ -89,7 +89,7 @@ namespace PhotoAlbum.Backend.Bll.Services.Image
                         Path = album.Path + "/" + i.FileName,
                         Date = i.Date,
                         Location = i.Location,
-                        Tags = i.Tags.Select(t => t.Text).ToList(),
+                        Tags = i.Tags == null ? new List<string>() : JsonConvert.DeserializeObject<List<string>>(i.Tags),
                         Comments = i.Comments.Select(c => new CommentDto { Commenter = new UserDto { UserName = c.Commenter.UserName, Email = c.Commenter.Email, Id = c.Commenter.Id }, Date = c.Date, Id = c.Id, Text = c.Text }).ToList(),
                         Uploader = new UserDto { Id = album.Creator.Id, UserName = album.Creator.UserName, Email = album.Creator.Email }
                     }).ToList()
@@ -104,7 +104,6 @@ namespace PhotoAlbum.Backend.Bll.Services.Image
                     {
                         var album = await _dbContext.Albums
                             .Include(al => al.Creator)
-                            .Include(al => al.Images).ThenInclude(i => i.Tags)
                             .Include(al => al.Images).ThenInclude(i => i.Comments).ThenInclude(c => c.Commenter)
                             .FirstOrDefaultAsync(al => al.Id == a.AlbumId);
 
@@ -121,7 +120,7 @@ namespace PhotoAlbum.Backend.Bll.Services.Image
                                 Path = album.Path + "/" + i.FileName,
                                 Date = i.Date,
                                 Location = i.Location,
-                                Tags = i.Tags.Select(t => t.Text).ToList(),
+                                Tags = i.Tags == null ? new List<string>() : JsonConvert.DeserializeObject<List<string>>(i.Tags),
                                 Comments = i.Comments.Select(c => new CommentDto { Commenter = new UserDto { UserName = c.Commenter.UserName, Email = c.Commenter.Email, Id = c.Commenter.Id }, Date = c.Date, Id = c.Id, Text = c.Text }).ToList(),
                                 Uploader = new UserDto { Id = album.Creator.Id, UserName = album.Creator.UserName, Email = album.Creator.Email }
                             }).ToList()
@@ -137,7 +136,6 @@ namespace PhotoAlbum.Backend.Bll.Services.Image
         {
             var album = await _dbContext.Albums
                 .Include(al => al.Creator)
-                .Include(al => al.Images).ThenInclude(i => i.Tags)
                 .Include(al => al.Images).ThenInclude(i => i.Comments).ThenInclude(c => c.Commenter)
                 .FirstOrDefaultAsync(a => a.Path.Equals(albumLink));
 
@@ -157,7 +155,7 @@ namespace PhotoAlbum.Backend.Bll.Services.Image
                     Path = album.Path + "/" + i.FileName,
                     Date = i.Date,
                     Location = i.Location,
-                    Tags = i.Tags.Select(t => t.Text).ToList(),
+                    Tags = i.Tags == null ? new List<string>() : JsonConvert.DeserializeObject<List<string>>(i.Tags),
                     Comments = i.Comments.Select(c => new CommentDto { Commenter = new UserDto { UserName = c.Commenter.UserName, Email = c.Commenter.Email, Id = c.Commenter.Id }, Date = c.Date, Id = c.Id, Text = c.Text }).ToList(),
                     Uploader = new UserDto { Id = album.Creator.Id, UserName = album.Creator.UserName, Email = album.Creator.Email }
                 }).ToList()

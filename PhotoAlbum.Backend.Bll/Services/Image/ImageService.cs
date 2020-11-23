@@ -14,6 +14,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using PhotoAlbum.Backend.Common.Dtos.Account;
+using Newtonsoft.Json;
 
 namespace PhotoAlbum.Backend.Bll.Services.Image
 {
@@ -62,7 +63,8 @@ namespace PhotoAlbum.Backend.Bll.Services.Image
                 Date = DateTime.UtcNow,
                 Location = "Unknown",
                 FileName = file.FileName,
-                Uploader = await _userManager.GetUserAsync(_user)
+                Uploader = await _userManager.GetUserAsync(_user),
+                Tags = JsonConvert.SerializeObject(new List<string>())
             };
 
             _dbContext.Images.Add(image);
@@ -82,6 +84,49 @@ namespace PhotoAlbum.Backend.Bll.Services.Image
                 Date = image.Date,
                 Location = image.Location,
                 Tags = new List<string>()
+            };
+        }
+
+        public async Task<ImageDto> EditImageAsync(ImageEditDto imageEditDto)
+        {
+            var user = await _userManager.GetUserAsync(_user);
+
+            var image = await _dbContext.Images
+                .Include(i => i.Album)
+                .Include(i => i.Uploader)
+                .Include(i => i.Comments).ThenInclude(c => c.Commenter)
+                .FirstOrDefaultAsync(i => i.Id == imageEditDto.Id);
+
+            if (image is null)
+                throw new PhotoAlbumException($"Image with id '{imageEditDto.Id}' does not exist", 404);
+
+            if (image.Uploader != user)
+                throw new PhotoAlbumException($"You do not have authorization to modify image with id '{imageEditDto.Id}'", 401);
+
+            var imagePath = Path.Combine(_imageOptions.RootPath, _imageOptions.FilesPath, image.Album.Path, image.FileName);
+            var newImagePath = Path.Combine(_imageOptions.RootPath, _imageOptions.FilesPath, image.Album.Path, imageEditDto.FileName);
+
+            if (File.Exists(imagePath) && !File.Exists(newImagePath))
+                File.Move(imagePath, newImagePath);
+            else throw new PhotoAlbumException($"An image with the name '{imageEditDto.FileName}' already exists in the album");
+
+            image.FileName = imageEditDto.FileName;
+            image.Location = imageEditDto.Location;
+            image.Date = imageEditDto.Date;
+            image.Tags = JsonConvert.SerializeObject(imageEditDto.Tags);
+
+            await _dbContext.SaveChangesAsync();
+
+            return new ImageDto
+            {
+                Id = image.Id,
+                FileName = image.FileName,
+                Path = image.Album.Path + "/" + image.FileName,
+                Date = image.Date,
+                Location = image.Location,
+                Tags = image.Tags == null ? new List<string>() : JsonConvert.DeserializeObject<List<string>>(image.Tags),
+                Comments = image.Comments.Select(c => new CommentDto { Commenter = new UserDto { UserName = c.Commenter.UserName, Email = c.Commenter.Email, Id = c.Commenter.Id }, Date = c.Date, Id = c.Id, Text = c.Text }).ToList(),
+                Uploader = new UserDto { Id = image.Uploader.Id, UserName = image.Uploader.UserName, Email = image.Uploader.Email }
             };
         }
 
