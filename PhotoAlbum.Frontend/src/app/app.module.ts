@@ -36,6 +36,7 @@ import { AlbumsPublicComponent } from './albums-public/albums-public.component';
 import { CommentsComponent } from './core/comments/comments.component';
 import { ShareComponent } from './core/share/share.component';
 import { EditComponent } from './core/edit/edit.component';
+import { UsersComponent } from './core/users/users.component';
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import { EditComponent } from './core/edit/edit.component';
     CommentsComponent,
     ShareComponent,
     EditComponent,
+    UsersComponent,
   ],
   imports: [
     RouterModule.forRoot(APP_ROUTES),
