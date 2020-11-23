@@ -53,12 +53,15 @@ export class EditComponent implements OnInit {
   }
 
   save(): void {
-    this.image.fileName = this.fileName + "." + this.extension;
-    this.image.location = this.location;
-    this.image.tags = this.tags;
+    var editImage = this.image;
 
-    this.imageClient.editImage(this.image).subscribe(
+    editImage.fileName = this.fileName + "." + this.extension;
+    editImage.location = this.location;
+    editImage.tags = this.tags;
+
+    this.imageClient.editImage(editImage).subscribe(
       (r) => {
+        this.image = r;
         this.snackbarService.openSuccess('Image edit successful');
       },
       (error) => {
