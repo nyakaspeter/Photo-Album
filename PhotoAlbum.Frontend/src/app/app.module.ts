@@ -16,6 +16,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatChipsModule } from '@angular/material/chips';
 import { API_BASE_URL } from './api/app.generated';
 import { APP_ROUTES } from './app.routes';
 import { ModalService } from './core/modal/modal.service';
@@ -76,6 +77,7 @@ import { UsersComponent } from './core/users/users.component';
     MatDialogModule,
     MatMenuModule,
     MatSnackBarModule,
+    MatChipsModule,
   ],
   providers: [
     CredentialsService,

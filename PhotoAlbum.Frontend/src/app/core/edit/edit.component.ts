@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ImageDto } from 'src/app/api/app.generated';
+import { MatChipInputEvent } from '@angular/material/chips';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { ImageClient, ImageDto } from 'src/app/api/app.generated';
+import { SnackbarService } from '../snackbar/snackbar.service';
 
 @Component({
   selector: 'app-edit',
@@ -7,9 +10,60 @@ import { ImageDto } from 'src/app/api/app.generated';
   styleUrls: ['./edit.component.scss'],
 })
 export class EditComponent implements OnInit {
+  readonly separatorKeysCodes: number[] = [ENTER, COMMA];
+
   public image: ImageDto;
 
-  constructor() {}
+  extension: string;
+  fileName: string;
+  location: string;
+  tags: string[] = [];
 
-  ngOnInit(): void {}
+  constructor(
+    private imageClient: ImageClient,
+    private snackbarService: SnackbarService,
+  ) { }
+
+  ngOnInit(): void {
+    this.extension = this.image.fileName.substr(this.image.fileName.lastIndexOf('.') + 1);
+    this.fileName = this.image.fileName.split('.').slice(0, -1).join('.');
+    this.location = this.image.location;
+    this.tags = this.image.tags;
+  }
+
+  addTag(event: MatChipInputEvent): void {
+    const input = event.input;
+    const value = event.value;
+
+    if ((value || '').trim()) {
+      this.tags.push(value.trim());
+    }
+
+    if (input) {
+      input.value = '';
+    }
+  }
+
+  removeTag(tag: string): void {
+    const index = this.tags.indexOf(tag);
+
+    if (index >= 0) {
+      this.tags.splice(index, 1);
+    }
+  }
+
+  save(): void {
+    this.image.fileName = this.fileName + "." + this.extension;
+    this.image.location = this.location;
+    this.image.tags = this.tags;
+
+    this.imageClient.editImage(this.image).subscribe(
+      (r) => {
+        this.snackbarService.openSuccess('Image edit successful');
+      },
+      (error) => {
+        this.snackbarService.openError(error.detail);
+      }
+    );
+  }
 }

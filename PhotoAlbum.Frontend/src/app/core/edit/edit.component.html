@@ -1,1 +1,42 @@
-<p>edit works!</p>
+<p>{{ image.fileName }}</p>
+<p>{{ image.location }}</p>
+<p>{{ image.date }}</p>
+<p>{{ image.uploader }}</p>
+<p>{{ image.tags }}</p>
+
+<div style="margin: auto; width: 50%; text-align: center;">
+    <b style="font-size: large;">Edit image metadata</b>
+</div>
+
+<mat-dialog-content class="mat-typography">
+    <mat-form-field style="width: 100%">
+        <mat-label>File name</mat-label>
+        <input matInput [(ngModel)]="fileName" />
+    </mat-form-field>
+
+    <mat-form-field style="width: 100%">
+        <mat-label>Location</mat-label>
+        <input matInput [(ngModel)]="location" />
+    </mat-form-field>
+
+    <mat-form-field style="width: 100%">
+        <mat-chip-list #tagList aria-label="Tags">
+            <mat-chip *ngFor="let tag of tags" [removable]="true" (removed)="removeTag(tag)">
+                {{ tag }}
+                <mat-icon matChipRemove>cancel</mat-icon>
+            </mat-chip>
+            <input placeholder="New tag..." [matChipInputFor]="tagList"
+                [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="true"
+                (matChipInputTokenEnd)="addTag($event)">
+        </mat-chip-list>
+    </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>
+        Cancel
+    </button>
+    <button mat-button mat-dialog-close cdkFocusInitial (click)="save()">
+        Save
+    </button>
+</mat-dialog-actions>
