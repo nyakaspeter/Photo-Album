@@ -15,7 +15,6 @@ namespace PhotoAlbum.Backend.Dal
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Group> Groups { get; set; }
         public DbSet<Image> Images { get; set; }
-        public DbSet<Tag> Tags { get; set; }
 
         public PhotoAlbumDbContext(DbContextOptions<PhotoAlbumDbContext> options) : base(options)
         {
@@ -33,7 +32,6 @@ namespace PhotoAlbum.Backend.Dal
             builder.ApplyConfiguration(new GroupConfiguration());
             builder.ApplyConfiguration(new GroupUserConfiguration());
             builder.ApplyConfiguration(new ImageConfiguration());
-            builder.ApplyConfiguration(new TagConfiguration());
             builder.ApplyConfiguration(new UserConfiguration());
         }
     }

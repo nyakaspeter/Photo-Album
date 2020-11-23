@@ -12,5 +12,6 @@ namespace PhotoAlbum.Backend.Bll.Services.Image
         Task DeleteImageAsync(int imageId);
         Task<CommentDto> PostCommentAsync(int imageId, string text);
         Task DeleteCommentAsync(int commentId);
+        Task<ImageDto> EditImageAsync(ImageEditDto imageEditDto);
     }
 }

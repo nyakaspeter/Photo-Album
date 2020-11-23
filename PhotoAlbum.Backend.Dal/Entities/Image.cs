@@ -12,7 +12,7 @@ namespace PhotoAlbum.Backend.Dal.Entities
         public string Location { get; set; }
         public DateTime Date { get; set; }
         public Album Album { get; set; }
-        public List<Tag> Tags { get; set; }
+        public string Tags { get; set; }
         public User Uploader { get; set; }
         public List<Comment> Comments { get; set; }
     }

@@ -26,6 +26,12 @@ namespace PhotoAlbum.Backend.Web.Controllers
             return await _imageService.UploadImageAsync(albumId, file);
         }
 
+        [HttpPut]
+        public async Task<ImageDto> EditImage(ImageEditDto imageEditDto)
+        {
+            return await _imageService.EditImageAsync(imageEditDto);
+        }
+
         [HttpDelete]
         public async Task DeleteImage(int imageId)
         {
