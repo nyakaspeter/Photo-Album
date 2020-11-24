@@ -1032,6 +1032,96 @@ export class AlbumClient {
         return _observableOf<void>(<any>null);
     }
 
+    unshareAlbumWithUser(albumId?: number | undefined, userId?: number | undefined, __extras: any = null, __headerOverrides: any = null): Observable<void> {
+        let url_ = this.baseUrl + "/api/Album/usershare?";
+        if (albumId === null)
+            throw new Error("The parameter 'albumId' cannot be null.");
+        else if (albumId !== undefined)
+            url_ += "albumId=" + encodeURIComponent("" + albumId) + "&";
+        if (userId === null)
+            throw new Error("The parameter 'userId' cannot be null.");
+        else if (userId !== undefined)
+            url_ += "userId=" + encodeURIComponent("" + userId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders(
+                __headerOverrides != null ? __headerOverrides : {
+                }
+            ),
+            params: new ExtraHttpParams(__extras == null ? {} : __extras )
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUnshareAlbumWithUser(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUnshareAlbumWithUser(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processUnshareAlbumWithUser(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status === 400) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result400: any = null;
+            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result400 = ErrorDto.fromJS(resultData400);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
+            }));
+        } else if (status === 500) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result500: any = null;
+            let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result500 = ErrorDto.fromJS(resultData500);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result500);
+            }));
+        } else if (status === 401) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result401: any = null;
+            let resultData401 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result401 = ErrorDto.fromJS(resultData401);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result401);
+            }));
+        } else if (status === 403) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result403: any = null;
+            let resultData403 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result403 = ErrorDto.fromJS(resultData403);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result403);
+            }));
+        } else if (status === 404) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result404: any = null;
+            let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result404 = ErrorDto.fromJS(resultData404);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
     shareAlbumWithGroup(albumId?: number | undefined, groupId?: number | undefined, __extras: any = null, __headerOverrides: any = null): Observable<void> {
         let url_ = this.baseUrl + "/api/Album/groupshare?";
         if (albumId === null)
@@ -1069,6 +1159,96 @@ export class AlbumClient {
     }
 
     protected processShareAlbumWithGroup(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status === 400) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result400: any = null;
+            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result400 = ErrorDto.fromJS(resultData400);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
+            }));
+        } else if (status === 500) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result500: any = null;
+            let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result500 = ErrorDto.fromJS(resultData500);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result500);
+            }));
+        } else if (status === 401) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result401: any = null;
+            let resultData401 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result401 = ErrorDto.fromJS(resultData401);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result401);
+            }));
+        } else if (status === 403) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result403: any = null;
+            let resultData403 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result403 = ErrorDto.fromJS(resultData403);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result403);
+            }));
+        } else if (status === 404) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result404: any = null;
+            let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result404 = ErrorDto.fromJS(resultData404);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    unshareAlbumWithGroup(albumId?: number | undefined, groupId?: number | undefined, __extras: any = null, __headerOverrides: any = null): Observable<void> {
+        let url_ = this.baseUrl + "/api/Album/groupshare?";
+        if (albumId === null)
+            throw new Error("The parameter 'albumId' cannot be null.");
+        else if (albumId !== undefined)
+            url_ += "albumId=" + encodeURIComponent("" + albumId) + "&";
+        if (groupId === null)
+            throw new Error("The parameter 'groupId' cannot be null.");
+        else if (groupId !== undefined)
+            url_ += "groupId=" + encodeURIComponent("" + groupId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders(
+                __headerOverrides != null ? __headerOverrides : {
+                }
+            ),
+            params: new ExtraHttpParams(__extras == null ? {} : __extras )
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUnshareAlbumWithGroup(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUnshareAlbumWithGroup(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processUnshareAlbumWithGroup(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -2354,6 +2534,8 @@ export class AlbumDto implements IAlbumDto {
     path!: string;
     creator!: UserDto;
     images!: ImageDto[];
+    usersWithAccess!: UserDto[];
+    groupsWithAccess!: GroupDto[];
 
     constructor(data?: IAlbumDto) {
         if (data) {
@@ -2369,10 +2551,26 @@ export class AlbumDto implements IAlbumDto {
                     this.images[i] = item && !(<any>item).toJSON ? new ImageDto(item) : <ImageDto>item;
                 }
             }
+            if (data.usersWithAccess) {
+                this.usersWithAccess = [];
+                for (let i = 0; i < data.usersWithAccess.length; i++) {
+                    let item = data.usersWithAccess[i];
+                    this.usersWithAccess[i] = item && !(<any>item).toJSON ? new UserDto(item) : <UserDto>item;
+                }
+            }
+            if (data.groupsWithAccess) {
+                this.groupsWithAccess = [];
+                for (let i = 0; i < data.groupsWithAccess.length; i++) {
+                    let item = data.groupsWithAccess[i];
+                    this.groupsWithAccess[i] = item && !(<any>item).toJSON ? new GroupDto(item) : <GroupDto>item;
+                }
+            }
         }
         if (!data) {
             this.creator = new UserDto();
             this.images = [];
+            this.usersWithAccess = [];
+            this.groupsWithAccess = [];
         }
     }
 
@@ -2386,6 +2584,16 @@ export class AlbumDto implements IAlbumDto {
                 this.images = [] as any;
                 for (let item of _data["images"])
                     this.images!.push(ImageDto.fromJS(item));
+            }
+            if (Array.isArray(_data["usersWithAccess"])) {
+                this.usersWithAccess = [] as any;
+                for (let item of _data["usersWithAccess"])
+                    this.usersWithAccess!.push(UserDto.fromJS(item));
+            }
+            if (Array.isArray(_data["groupsWithAccess"])) {
+                this.groupsWithAccess = [] as any;
+                for (let item of _data["groupsWithAccess"])
+                    this.groupsWithAccess!.push(GroupDto.fromJS(item));
             }
         }
     }
@@ -2408,6 +2616,16 @@ export class AlbumDto implements IAlbumDto {
             for (let item of this.images)
                 data["images"].push(item.toJSON());
         }
+        if (Array.isArray(this.usersWithAccess)) {
+            data["usersWithAccess"] = [];
+            for (let item of this.usersWithAccess)
+                data["usersWithAccess"].push(item.toJSON());
+        }
+        if (Array.isArray(this.groupsWithAccess)) {
+            data["groupsWithAccess"] = [];
+            for (let item of this.groupsWithAccess)
+                data["groupsWithAccess"].push(item.toJSON());
+        }
         return data; 
     }
 }
@@ -2418,6 +2636,8 @@ export interface IAlbumDto {
     path: string;
     creator: IUserDto;
     images: IImageDto[];
+    usersWithAccess: IUserDto[];
+    groupsWithAccess: IGroupDto[];
 }
 
 export class ImageDto implements IImageDto {
