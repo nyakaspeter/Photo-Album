@@ -71,10 +71,22 @@ namespace PhotoAlbum.Backend.Web.Controllers
             await _albumService.ShareAlbumWithUser(albumId, userId);
         }
 
+        [HttpDelete("usershare")]
+        public async Task UnshareAlbumWithUser(int albumId, int userId)
+        {
+            await _albumService.UnshareAlbumWithUser(albumId, userId);
+        }
+
         [HttpPost("groupshare")]
         public async Task ShareAlbumWithGroup(int albumId, int groupId)
         {
             await _albumService.ShareAlbumWithGroup(albumId, groupId);
+        }
+
+        [HttpDelete("groupshare")]
+        public async Task UnshareAlbumWithGroup(int albumId, int groupId)
+        {
+            await _albumService.UnshareAlbumWithGroup(albumId, groupId);
         }
     }
 }

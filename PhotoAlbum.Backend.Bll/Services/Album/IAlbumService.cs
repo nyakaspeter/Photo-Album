@@ -15,7 +15,9 @@ namespace PhotoAlbum.Backend.Bll.Services.Image
         Task<AlbumDto> GetPublicAlbumAsync(string albumLink);
         Task<string> DownloadAlbumAsync(int albumId);
         Task ShareAlbumWithUser(int albumId, int userId);
+        Task UnshareAlbumWithUser(int albumId, int userId);
         Task ShareAlbumWithGroup(int albumId, int groupId);
+        Task UnshareAlbumWithGroup(int albumId, int groupId);
         Task<List<AlbumDto>> GetAlbumsAsync();
     }
 }

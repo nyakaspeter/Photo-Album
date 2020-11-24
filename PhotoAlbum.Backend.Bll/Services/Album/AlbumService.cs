@@ -17,6 +17,7 @@ using PhotoAlbum.Backend.Common.Dtos.Album;
 using PhotoAlbum.Backend.Common.Dtos.Account;
 using System.IO.Compression;
 using Newtonsoft.Json;
+using PhotoAlbum.Backend.Common.Dtos.Group;
 
 namespace PhotoAlbum.Backend.Bll.Services.Image
 {
@@ -54,7 +55,9 @@ namespace PhotoAlbum.Backend.Bll.Services.Image
                     Tags = i.Tags == null ? new List<string>() : JsonConvert.DeserializeObject<List<string>>(i.Tags),
                     Comments = i.Comments.Select(c => new CommentDto { Commenter = new UserDto { UserName = c.Commenter.UserName, Email = c.Commenter.Email, Id = c.Commenter.Id }, Date = c.Date, Id = c.Id, Text = c.Text }).ToList(),
                     Uploader = new UserDto { Id = a.Creator.Id, UserName = a.Creator.UserName, Email = a.Creator.Email}
-                }).ToList()
+                }).ToList(),
+                UsersWithAccess = a.Users.Select(u => new UserDto { Id = u.UserId, UserName = u.User.UserName, Email = u.User.Email }).ToList(),
+                GroupsWithAccess = a.Groups.Select(g => new GroupDto { Id = g.GroupId, Name = g.Group.Name }).ToList()
             }).ToListAsync();
         }
 
@@ -182,7 +185,9 @@ namespace PhotoAlbum.Backend.Bll.Services.Image
                 Name = album.Name,
                 Creator = new UserDto { Id = album.Creator.Id, UserName = album.Creator.UserName, Email = album.Creator.Email },
                 Images = new List<ImageDto>(),
-                Path = album.Path
+                Path = album.Path,
+                UsersWithAccess = new List<UserDto>(),
+                GroupsWithAccess = new List<GroupDto>()
             };
         }
 
@@ -247,6 +252,34 @@ namespace PhotoAlbum.Backend.Bll.Services.Image
             await _dbContext.SaveChangesAsync();
         }
 
+        public async Task UnshareAlbumWithGroup(int albumId, int groupId)
+        {
+            var user = await _userManager.GetUserAsync(_user);
+
+            var album = await _dbContext.Albums.FindAsync(albumId);
+
+            if (album == null)
+                throw new PhotoAlbumException($"Album with id '{albumId}' does not exist", 404);
+
+            if (album.Creator != user)
+                throw new PhotoAlbumException($"You do not have authorization to share album with id '{albumId}'", 401);
+
+            var group = await _dbContext.Groups.Include(g => g.Albums).FirstOrDefaultAsync(g => g.Id == groupId);
+
+            if (group == null)
+                throw new PhotoAlbumException($"Group with id '{groupId}' does not exist", 404);
+
+            if (!user.CreatedGroups.Contains(group))
+                throw new PhotoAlbumException($"You do not have authorization to share to group with id '{groupId}'", 401);
+
+            var albumGroup = group.Albums.FirstOrDefault(ag => ag.AlbumId == albumId);
+            if (albumGroup == null)
+                throw new PhotoAlbumException($"Album with id '{albumId}' is not shared with the group with id '{groupId}'", 404);
+
+            group.Albums.Remove(albumGroup);
+            await _dbContext.SaveChangesAsync();
+        }
+
         public async Task ShareAlbumWithUser(int albumId, int userId)
         {
             var user = await _userManager.GetUserAsync(_user);
@@ -265,6 +298,31 @@ namespace PhotoAlbum.Backend.Bll.Services.Image
                 throw new PhotoAlbumException($"User with id '{userId}' does not exist", 404);
 
             shareUser.Albums.Add(new AlbumUser { AlbumId = albumId, UserId = userId });
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task UnshareAlbumWithUser(int albumId, int userId)
+        {
+            var user = await _userManager.GetUserAsync(_user);
+
+            var album = await _dbContext.Albums.FindAsync(albumId);
+
+            if (album == null)
+                throw new PhotoAlbumException($"Album with id '{albumId}' does not exist", 404);
+
+            if (album.Creator != user)
+                throw new PhotoAlbumException($"You do not have authorization to share album with id '{albumId}'", 401);
+
+            var shareUser = await _dbContext.Users.Include(u => u.Albums).FirstOrDefaultAsync(u => u.Id == userId);
+
+            if (shareUser == null)
+                throw new PhotoAlbumException($"User with id '{userId}' does not exist", 404);
+
+            var albumUser = shareUser.Albums.FirstOrDefault(au => au.AlbumId == albumId);
+            if (albumUser == null)
+                throw new PhotoAlbumException($"Album with id '{albumId}' is not shared with the user with id '{userId}'", 404);
+
+            shareUser.Albums.Remove(albumUser);
             await _dbContext.SaveChangesAsync();
         }
 
