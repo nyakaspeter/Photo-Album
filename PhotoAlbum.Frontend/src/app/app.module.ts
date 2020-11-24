@@ -17,6 +17,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { API_BASE_URL } from './api/app.generated';
 import { APP_ROUTES } from './app.routes';
 import { ModalService } from './core/modal/modal.service';
@@ -78,6 +79,7 @@ import { UsersComponent } from './core/users/users.component';
     MatMenuModule,
     MatSnackBarModule,
     MatChipsModule,
+    MatAutocompleteModule,
   ],
   providers: [
     CredentialsService,
