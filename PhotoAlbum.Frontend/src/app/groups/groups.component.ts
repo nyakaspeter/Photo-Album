@@ -11,7 +11,9 @@ import { UsersComponent } from '../core/users/users.component';
   styleUrls: ['./groups.component.scss']
 })
 export class GroupsComponent implements OnInit {
+  searchValue: String = '';
   groups: GroupDto[];
+  filteredGroups: GroupDto[];
 
   constructor(
     private modalService: ModalService,
@@ -24,10 +26,16 @@ export class GroupsComponent implements OnInit {
     this.getGroups();
   }
 
+  onSearch(value: String) {
+    this.searchValue = value;
+    this.filteredGroups = this.groups.filter(group => group.name.toLowerCase().includes(this.searchValue.toLowerCase()));
+  }
+
   getGroups(): void {
     this.groupClient.getGroups().subscribe(
       (r) => {
         this.groups = r;
+        this.filteredGroups = this.groups;
       },
       (error) => {
         this.snackbarService.openError(error.detail);

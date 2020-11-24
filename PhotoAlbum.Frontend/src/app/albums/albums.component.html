@@ -1,5 +1,10 @@
+<mat-form-field appearance="outline" style="width: 400px; margin: 16px; margin-bottom: -24px;">
+  <mat-label>Search</mat-label>
+  <input matInput [ngModel]="searchValue" (ngModelChange)="onSearch($event)" />
+</mat-form-field>
+
 <app-album
-  *ngFor="let album of albums"
+  *ngFor="let album of filteredAlbums"
   [album]="album"
   [owned]="true"
   (albumDeleted)="onAlbumDeleted($event)"

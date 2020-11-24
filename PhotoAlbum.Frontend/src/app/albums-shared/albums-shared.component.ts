@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { AlbumClient, AlbumDto } from '../api/app.generated';
-import { ModalService } from '../core/modal/modal.service';
 import { SnackbarService } from '../core/snackbar/snackbar.service';
 
 @Component({
@@ -9,22 +8,29 @@ import { SnackbarService } from '../core/snackbar/snackbar.service';
   styleUrls: ['./albums-shared.component.scss'],
 })
 export class AlbumsSharedComponent implements OnInit {
+  searchValue: String = '';
   albums: AlbumDto[];
+  filteredAlbums: AlbumDto[];
 
   constructor(
-    private modalService: ModalService,
     private albumClient: AlbumClient,
     private snackbarService: SnackbarService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.albumClient.getSharedAlbums().subscribe(
       (r) => {
         this.albums = r;
+        this.filteredAlbums = this.albums;
       },
       (error) => {
         this.snackbarService.openError(error.detail);
       }
     );
+  }
+
+  onSearch(value: String) {
+    this.searchValue = value;
+    this.filteredAlbums = this.albums.filter(album => album.name.toLowerCase().includes(this.searchValue.toLowerCase()));
   }
 }

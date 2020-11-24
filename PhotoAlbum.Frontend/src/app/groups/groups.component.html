@@ -1,4 +1,9 @@
-<div *ngFor="let group of groups">
+<mat-form-field appearance="outline" style="width: 400px; margin: 16px; margin-bottom: -24px;">
+  <mat-label>Search</mat-label>
+  <input matInput [ngModel]="searchValue" (ngModelChange)="onSearch($event)" />
+</mat-form-field>
+
+<div *ngFor="let group of filteredGroups">
     <mat-toolbar style="background-color: transparent; margin-bottom: -16px">
         <mat-toolbar-row>
           <span>{{ group.name }}</span>
