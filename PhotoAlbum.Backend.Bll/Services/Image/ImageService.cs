@@ -83,7 +83,8 @@ namespace PhotoAlbum.Backend.Bll.Services.Image
                 Path = album.Path + "/" + image.FileName,
                 Date = image.Date,
                 Location = image.Location,
-                Tags = new List<string>()
+                Tags = new List<string>(),
+                Uploader = new UserDto { Id = image.Uploader.Id, UserName = image.Uploader.UserName, Email = image.Uploader.Email }
             };
         }
 

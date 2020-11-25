@@ -211,7 +211,10 @@ namespace PhotoAlbum.Backend.Bll.Services.Image
         {
             var user = await _userManager.GetUserAsync(_user);
 
-            var album = await _dbContext.Albums.FindAsync(albumId);
+            var album = await _dbContext.Albums
+                .Include(a => a.Groups)
+                .Include(a => a.Users)
+                .FirstOrDefaultAsync(a => a.Id == albumId);
 
             if (album == null) 
                 throw new PhotoAlbumException($"Album with id '{albumId}' does not exist", 404);
@@ -220,6 +223,9 @@ namespace PhotoAlbum.Backend.Bll.Services.Image
                 throw new PhotoAlbumException($"You do not have authorization to delete album with id '{albumId}'", 401);
 
             var albumPath = Path.Combine(_imageOptions.RootPath, _imageOptions.FilesPath, album.Path);
+
+            album.Groups.RemoveAll(g => true);
+            album.Users.RemoveAll(u => true);
 
             _dbContext.Albums.Remove(album);
             await _dbContext.SaveChangesAsync();
