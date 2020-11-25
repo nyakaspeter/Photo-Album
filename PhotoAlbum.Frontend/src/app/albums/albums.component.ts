@@ -23,7 +23,7 @@ export class AlbumsComponent implements OnInit {
     this.albumClient.getAlbums().subscribe(
       (r) => {
         this.albums = r;
-        this.filteredAlbums = this.albums;
+        this.onSearch(this.searchValue);
       },
       (error) => {
         this.snackbarService.openError(error.detail);
@@ -45,6 +45,7 @@ export class AlbumsComponent implements OnInit {
           this.albumClient.createAlbum(albumName).subscribe(
             (r) => {
               this.albums.push(r);
+              this.onSearch(this.searchValue);
               this.snackbarService.openSuccess('Album creation successful');
             },
             (error) => {
@@ -57,5 +58,6 @@ export class AlbumsComponent implements OnInit {
 
   onAlbumDeleted(albumId: number): void {
     this.albums = this.albums.filter((a) => a.id != albumId);
+    this.onSearch(this.searchValue);
   }
 }

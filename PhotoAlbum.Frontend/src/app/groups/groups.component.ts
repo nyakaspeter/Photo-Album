@@ -35,7 +35,7 @@ export class GroupsComponent implements OnInit {
     this.groupClient.getGroups().subscribe(
       (r) => {
         this.groups = r;
-        this.filteredGroups = this.groups;
+        this.onSearch(this.searchValue);
       },
       (error) => {
         this.snackbarService.openError(error.detail);
@@ -52,6 +52,7 @@ export class GroupsComponent implements OnInit {
           this.groupClient.createGroup(groupName).subscribe(
             (r) => {
               this.groups.push(r);
+              this.onSearch(this.searchValue);
               this.snackbarService.openSuccess('Group creation successful');
             },
             (error) => {
@@ -71,7 +72,6 @@ export class GroupsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(r => {
       if (r) {
-        console.log("refresh");
         this.getGroups();
       }
     });
@@ -105,6 +105,7 @@ export class GroupsComponent implements OnInit {
           this.groupClient.deleteGroup(groupId).subscribe(
             () => {
               this.groups = this.groups.filter((a) => a.id != groupId);
+              this.onSearch(this.searchValue);
               this.snackbarService.openSuccess('Group delete successful');
             },
             (error) => {

@@ -21,7 +21,7 @@ export class AlbumsSharedComponent implements OnInit {
     this.albumClient.getSharedAlbums().subscribe(
       (r) => {
         this.albums = r;
-        this.filteredAlbums = this.albums;
+        this.onSearch(this.searchValue);
       },
       (error) => {
         this.snackbarService.openError(error.detail);
