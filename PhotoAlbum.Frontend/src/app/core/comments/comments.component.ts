@@ -48,6 +48,7 @@ export class CommentsComponent implements OnInit {
         if (r) {
           this.imageClient.deleteComment(id).subscribe(
             () => {
+              this.comments = this.comments.filter((c) => c.id != id);
               this.snackbarService.openSuccess('Delete successful');
             },
             (error) => this.snackbarService.openError(error.detail)
