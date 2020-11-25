@@ -1,7 +1,10 @@
-<mat-form-field appearance="outline" style="width: 400px; margin: 16px; margin-bottom: -24px;">
-    <mat-label>Search</mat-label>
-    <input matInput [ngModel]="searchValue" (ngModelChange)="onSearch($event)" />
-</mat-form-field>
+<input
+  class="top-search"
+  placeholder="Album name"
+  matInput
+  [ngModel]="searchValue"
+  (ngModelChange)="onSearch($event)"
+/>
 
 <app-album *ngFor="let album of filteredAlbums" [album]="album" [owned]="false">
 </app-album>

@@ -64,3 +64,7 @@
   color: white;
   text-shadow: 2px 2px 2px black;
 }
+
+::ng-deep .mat-list-item-content {
+  width: 100%;
+}

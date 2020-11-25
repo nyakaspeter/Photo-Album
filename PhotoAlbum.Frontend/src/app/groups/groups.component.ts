@@ -8,7 +8,7 @@ import { UsersComponent } from '../core/users/users.component';
 @Component({
   selector: 'app-groups',
   templateUrl: './groups.component.html',
-  styleUrls: ['./groups.component.scss']
+  styleUrls: ['./groups.component.scss'],
 })
 export class GroupsComponent implements OnInit {
   searchValue: String = '';
@@ -20,7 +20,7 @@ export class GroupsComponent implements OnInit {
     private groupClient: GroupClient,
     private snackbarService: SnackbarService,
     public dialog: MatDialog
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.getGroups();
@@ -28,7 +28,9 @@ export class GroupsComponent implements OnInit {
 
   onSearch(value: String) {
     this.searchValue = value;
-    this.filteredGroups = this.groups.filter(group => group.name.toLowerCase().includes(this.searchValue.toLowerCase()));
+    this.filteredGroups = this.groups.filter((group) =>
+      group.name.toLowerCase().includes(this.searchValue.toLowerCase())
+    );
   }
 
   getGroups(): void {
@@ -70,7 +72,7 @@ export class GroupsComponent implements OnInit {
     });
     dialogRef.componentInstance.group = group;
 
-    dialogRef.afterClosed().subscribe(r => {
+    dialogRef.afterClosed().subscribe((r) => {
       if (r) {
         this.getGroups();
       }
@@ -114,5 +116,18 @@ export class GroupsComponent implements OnInit {
           );
         }
       });
+  }
+
+  removeUserFromGroup(groupId: number, userId: number) {
+    this.groupClient.deleteUserFromGroup(userId, groupId).subscribe(
+      (r) => {
+        this.snackbarService.openSuccess('User removed from group');
+        let group = this.groups.find((g) => g.id === groupId);
+        group.users = group.users.filter((u) => u.id !== userId);
+      },
+      (error) => {
+        this.snackbarService.openError(error.detail);
+      }
+    );
   }
 }

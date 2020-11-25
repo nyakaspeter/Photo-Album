@@ -1,43 +1,49 @@
-<div>
-  <p style="font-size: large">Comments ({{ comments.length }})</p>
-  <div *ngFor="let comment of comments">
-    <mat-card>
-      <mat-card-title style="display: inline">{{
-        comment.commenter.userName
-      }}</mat-card-title>
-      <mat-card-subtitle style="display: inline; float: right"
-        >{{ comment.date | date: "medium" }}
-      </mat-card-subtitle>
-      <mat-card-content>
-        <p style="white-space: pre-line; overflow-wrap: break-word">
-          {{ comment.text }}
-        </p>
-      </mat-card-content>
-      <div *ngIf="canDelete(comment.commenter.id)" style="text-align: end">
-        <button
-          mat-icon-button
-          matTooltip="Delete"
-          (click)="onDeleteComment(comment.id)"
-        >
-          <mat-icon>delete</mat-icon>
-        </button>
+<h2>Comments ({{ comments.length }})</h2>
+<div
+  *ngFor="let comment of comments"
+  style="margin-bottom: 20px; position: relative"
+>
+  <mat-card class="mat-elevation-z4">
+    <p style="display: inline">{{ comment.commenter.userName }}</p>
+    <mat-card-subtitle style="display: inline; float: right"
+      ><div>
+        {{ comment.date | date: "medium" }}
       </div>
-    </mat-card>
-    <span>&nbsp;</span>
-  </div>
+    </mat-card-subtitle>
+    <mat-card-content>
+      <h3 style="white-space: pre-line; overflow-wrap: break-word">
+        {{ comment.text }}
+      </h3>
+    </mat-card-content>
+  </mat-card>
 
-  <mat-form-field appearance="fill" style="width: 100%">
-    <mat-label>Comment</mat-label>
-    <textarea matInput [(ngModel)]="comment" cdkFocusInitial></textarea>
-  </mat-form-field>
-  <div style="text-align: end">
+  <div
+    style="position: absolute; right: 8px; bottom: 8px"
+    *ngIf="canDelete(comment.commenter.id)"
+  >
     <button
       mat-icon-button
-      color="primary"
-      matTooltip="Send"
-      (click)="onComment()"
+      matTooltip="Delete"
+      (click)="onDeleteComment(comment.id)"
     >
-      <mat-icon>send</mat-icon>
+      <mat-icon>delete</mat-icon>
     </button>
   </div>
+</div>
+
+<div style="display: flex; justify-content: stretch">
+  <mat-form-field appearance="outline" style="flex: 1 1 0">
+    <mat-label>Comment</mat-label>
+    <textarea cdkFocusInitial matInput [(ngModel)]="comment"></textarea>
+  </mat-form-field>
+
+  <button
+    style="margin: 4px 0px 24px 8px"
+    mat-flat-button
+    color="primary"
+    matTooltip="Send"
+    (click)="onComment()"
+  >
+    <mat-icon>send</mat-icon>
+  </button>
 </div>

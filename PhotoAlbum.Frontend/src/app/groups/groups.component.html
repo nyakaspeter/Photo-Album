@@ -1,39 +1,58 @@
-<mat-form-field appearance="outline" style="width: 400px; margin: 16px; margin-bottom: -24px;">
-  <mat-label>Search</mat-label>
-  <input matInput [ngModel]="searchValue" (ngModelChange)="onSearch($event)" />
-</mat-form-field>
+<input
+  class="top-search"
+  placeholder="Group name"
+  matInput
+  [ngModel]="searchValue"
+  (ngModelChange)="onSearch($event)"
+/>
 
 <div *ngFor="let group of filteredGroups">
-    <mat-toolbar style="background-color: transparent; margin-bottom: -16px">
-        <mat-toolbar-row>
-          <span>{{ group.name }}</span>
-          <span class="spacer"></span>
-          <button
-            mat-mini-fab
-            matTooltip="Manage members"
-            style="margin: 4px"
-            (click)="openUsersDialog(group)"
-          >
-            <mat-icon>people</mat-icon>
-          </button>
-          <button
-            mat-mini-fab
-            matTooltip="Rename group"
-            style="margin: 4px"
-            (click)="renameGroup(group)"
-          >
-            <mat-icon>edit</mat-icon>
-          </button>
-          <button
-            mat-mini-fab
-            matTooltip="Delete group"
-            style="margin: 4px"
-            (click)="deleteGroup(group.id)"
-          >
-            <mat-icon>delete</mat-icon>
-          </button>
-        </mat-toolbar-row>
-    </mat-toolbar>
+  <mat-toolbar style="background-color: transparent; margin-bottom: -16px">
+    <mat-toolbar-row>
+      <span>{{ group.name }}</span>
+      <span class="spacer"></span>
+      <button
+        mat-mini-fab
+        matTooltip="Manage users"
+        style="margin: 4px"
+        (click)="openUsersDialog(group)"
+      >
+        <mat-icon>group</mat-icon>
+      </button>
+      <button
+        mat-mini-fab
+        matTooltip="Rename group"
+        style="margin: 4px"
+        (click)="renameGroup(group)"
+      >
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button
+        mat-mini-fab
+        matTooltip="Delete group"
+        style="margin: 4px"
+        (click)="deleteGroup(group.id)"
+      >
+        <mat-icon>delete</mat-icon>
+      </button>
+    </mat-toolbar-row>
+  </mat-toolbar>
+  <mat-nav-list style="margin-top: 8px">
+    <mat-list-item *ngFor="let item of group.users">
+      <span>{{ item.userName }}</span>
+      <span style="margin-left: 4px; font-weight: lighter"
+        >({{ item.email }})</span
+      >
+      <span class="spacer"></span>
+      <button
+        matTooltip="Remove from group"
+        mat-mini-fab
+        (click)="removeUserFromGroup(group.id, item.id)"
+      >
+        <mat-icon>clear</mat-icon>
+      </button>
+    </mat-list-item>
+  </mat-nav-list>
 </div>
 
 <button

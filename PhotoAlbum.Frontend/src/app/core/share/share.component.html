@@ -1,49 +1,75 @@
-<div style="margin: auto; width: 50%; text-align: center;">
-    <b style="font-size: large;">Share album '{{ album.name }}' with groups and people</b>
-</div>
+<h2>Share album '{{ album.name }}'</h2>
 
 <mat-dialog-content class="mat-typography">
-    <mat-form-field style="width: 100%">
-        <mat-chip-list #groupList>
-            <mat-chip *ngFor="let group of groups" [removable]="true" (removed)="removeGroup(group)">
-                {{ group.name }}
-                <mat-icon matChipRemove>cancel</mat-icon>
-            </mat-chip>
-            <input placeholder="Groups" #groupInput [formControl]="groupCtrl" [matAutocomplete]="autoGroup"
-                [matChipInputFor]="groupList" [matChipInputAddOnBlur]="true">
-        </mat-chip-list>
-        <mat-autocomplete #autoGroup="matAutocomplete" (optionSelected)="selectedGroup($event)">
-            <mat-option *ngFor="let group of filteredGroups | async" [value]="group.name">
-                {{ group.name }}
-            </mat-option>
-        </mat-autocomplete>
-    </mat-form-field>
+  <mat-form-field style="width: 100%">
+    <mat-chip-list #groupList>
+      <mat-chip
+        *ngFor="let group of groups"
+        [removable]="true"
+        (removed)="removeGroup(group)"
+      >
+        {{ group.name }}
+        <mat-icon matChipRemove>cancel</mat-icon>
+      </mat-chip>
+      <input
+        placeholder="Groups"
+        #groupInput
+        [formControl]="groupCtrl"
+        [matAutocomplete]="autoGroup"
+        [matChipInputFor]="groupList"
+        [matChipInputAddOnBlur]="true"
+      />
+    </mat-chip-list>
+    <mat-autocomplete
+      #autoGroup="matAutocomplete"
+      (optionSelected)="selectedGroup($event)"
+    >
+      <mat-option
+        *ngFor="let group of filteredGroups | async"
+        [value]="group.name"
+      >
+        {{ group.name }}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
 
-    <mat-form-field style="width: 100%">
-        <mat-chip-list #userList>
-            <mat-chip *ngFor="let user of users" [removable]="true" (removed)="removeUser(user)">
-                {{ user.userName }}
-                <mat-icon matChipRemove>cancel</mat-icon>
-            </mat-chip>
-            <input placeholder="People" #userInput [formControl]="userCtrl" [matAutocomplete]="autoUser"
-                [matChipInputFor]="userList" [matChipInputAddOnBlur]="true">
-        </mat-chip-list>
-        <mat-autocomplete #autoUser="matAutocomplete" (optionSelected)="selectedUser($event)">
-            <mat-option *ngFor="let user of filteredUsers | async" [value]="user.userName">
-                {{ user.userName }}
-            </mat-option>
-        </mat-autocomplete>
-    </mat-form-field>
+  <mat-form-field style="width: 100%">
+    <mat-chip-list #userList>
+      <mat-chip
+        *ngFor="let user of users"
+        [removable]="true"
+        (removed)="removeUser(user)"
+      >
+        {{ user.userName }}
+        <mat-icon matChipRemove>cancel</mat-icon>
+      </mat-chip>
+      <input
+        placeholder="People"
+        #userInput
+        [formControl]="userCtrl"
+        [matAutocomplete]="autoUser"
+        [matChipInputFor]="userList"
+        [matChipInputAddOnBlur]="true"
+      />
+    </mat-chip-list>
+    <mat-autocomplete
+      #autoUser="matAutocomplete"
+      (optionSelected)="selectedUser($event)"
+    >
+      <mat-option
+        *ngFor="let user of filteredUsers | async"
+        [value]="user.userName"
+      >
+        {{ user.userName }}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
-    <button mat-button cdkFocusInitial (click)="publicShare()">
-        Copy link
-    </button>
-    <button mat-button mat-dialog-close>
-        Cancel
-    </button>
-    <button mat-button mat-dialog-close (click)="save()">
-        Save
-    </button>
+  <button mat-button cdkFocusInitial (click)="publicShare()">
+    Copy public link
+  </button>
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-button mat-dialog-close (click)="save()">Save</button>
 </mat-dialog-actions>
