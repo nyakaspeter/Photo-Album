@@ -31,9 +31,9 @@ export class AlbumComponent implements OnInit {
 
   @Output() albumDeleted: EventEmitter<number> = new EventEmitter();
 
-  titleFilter: String = "";
-  locationFilter: String = "";
-  tagFilter: String = "";
+  titleFilter: String = '';
+  locationFilter: String = '';
+  tagFilter: String = '';
   filteredImages: ImageDto[];
 
   isListView: boolean = false;
@@ -44,9 +44,9 @@ export class AlbumComponent implements OnInit {
     private albumClient: AlbumClient,
     private snackbarService: SnackbarService,
     public dialog: MatDialog
-  ) { }
+  ) {}
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 
   ngOnChanges(changes: SimpleChanges) {
     this.filteredImages = changes.album.currentValue.images;
@@ -68,9 +68,10 @@ export class AlbumComponent implements OnInit {
   }
 
   filterImages() {
-    this.filteredImages = this.album.images.filter((i) =>
-      i.fileName.toLowerCase().includes(this.titleFilter.toLowerCase()) &&
-      i.location.toLowerCase().includes(this.locationFilter.toLowerCase())
+    this.filteredImages = this.album.images.filter(
+      (i) =>
+        i.fileName.toLowerCase().includes(this.titleFilter.toLowerCase()) &&
+        i.location.toLowerCase().includes(this.locationFilter.toLowerCase())
     );
 
     if (this.tagFilter) {
@@ -105,6 +106,7 @@ export class AlbumComponent implements OnInit {
       maxHeight: '75vh',
     });
     dialogRef.componentInstance.image_id = image.id;
+    dialogRef.componentInstance.uploader_id = image.uploader.id;
     dialogRef.componentInstance.comments = image.comments;
   }
 
@@ -214,10 +216,10 @@ export class AlbumComponent implements OnInit {
   shareImage(imagePath: string): void {
     this.copyToClipboard(
       window.location.protocol +
-      '//' +
-      window.location.host +
-      '/albums/' +
-      imagePath
+        '//' +
+        window.location.host +
+        '/albums/' +
+        imagePath
     );
     this.snackbarService.openSuccess('Image link copied to clipboard');
   }
@@ -227,10 +229,10 @@ export class AlbumComponent implements OnInit {
       (r) => {
         this.downloadLink(
           window.location.protocol +
-          '//' +
-          window.location.host +
-          '/albums/.zips/' +
-          r
+            '//' +
+            window.location.host +
+            '/albums/.zips/' +
+            r
         );
       },
       (error) => {
