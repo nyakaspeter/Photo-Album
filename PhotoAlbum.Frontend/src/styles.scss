@@ -43,3 +43,16 @@ body {
 .image-dialog-backdrop {
   background: rgba(0, 0, 0, 0.9);
 }
+
+.top-search {
+  width: 300px;
+  margin: 16px;
+  position: absolute;
+  top: -68px;
+  left: 160px;
+  border: 2px solid white;
+  background-color: white;
+  padding: 10px;
+  border-radius: 50px;
+  outline: none;
+}
