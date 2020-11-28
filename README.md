@@ -1,8 +1,8 @@
 ## How to start up project
 
 1. Run `npm install` from the `PhotoAlbum.Frontend` folder
-2. Open `PhotoAlbum.sln` in Visual Studio and build the `PhotoAlbum.Backend.Dal` project
-3. Set `PhotoAlbum.Backend.Dal` as startup project, then run `Update-Database` in Package Manager Console
+2. Open `PhotoAlbum.sln` in Visual Studio and build the solution
+3. Set `PhotoAlbum.Backend.Web` as startup project and `PhotoAlbum.Backend.Dal` as default project in Package Manager Console then run the `Update-Database` command
 4. Set `PhotoAlbum.Backend.Web` as startup project, then run it with the `Frontend & Backend` configuration
 5. The webapp will open up in a browser window (ignore any errors in the console output), register a new user, or use the pre-generated admin account (configurable in `appsettings.Development.json`) to login
 
