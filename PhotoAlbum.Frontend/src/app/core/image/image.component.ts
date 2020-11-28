@@ -21,7 +21,7 @@ export class ImageComponent implements OnInit {
 
   constructor(
     private snackbarService: SnackbarService,
-    private credentialsService: CredentialsService,
+    public credentialsService: CredentialsService,
     private imageClient: ImageClient,
     private modalService: ModalService,
     public dialog: MatDialog
