@@ -142,6 +142,7 @@
             <mat-icon>get_app</mat-icon>
           </a>
           <button
+            *ngIf="credentialsService.isAuthenticated()"
             mat-icon-button
             matTooltip="Comments"
             (click)="$event.stopPropagation(); openCommentsDialog(item)"
@@ -208,6 +209,7 @@
             <mat-icon>get_app</mat-icon>
           </a>
           <button
+            *ngIf="credentialsService.isAuthenticated()"
             mat-icon-button
             matTooltip="Comments"
             (click)="$event.stopPropagation(); openCommentsDialog(item)"

@@ -13,6 +13,7 @@ import {
   ImageClient,
   ImageDto,
 } from 'src/app/api/app.generated';
+import { CredentialsService } from '../auth/credentials.service';
 import { CommentsComponent } from '../comments/comments.component';
 import { EditComponent } from '../edit/edit.component';
 import { ImageComponent } from '../image/image.component';
@@ -40,6 +41,7 @@ export class AlbumComponent implements OnInit {
 
   constructor(
     private modalService: ModalService,
+    public credentialsService: CredentialsService,
     private imageClient: ImageClient,
     private albumClient: AlbumClient,
     private snackbarService: SnackbarService,

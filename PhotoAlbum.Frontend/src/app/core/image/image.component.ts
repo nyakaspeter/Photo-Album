@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ImageClient, ImageDto } from 'src/app/api/app.generated';
+import { CredentialsService } from '../auth/credentials.service';
 import { CommentsComponent } from '../comments/comments.component';
 import { EditComponent } from '../edit/edit.component';
 import { ModalService } from '../modal/modal.service';
@@ -20,6 +21,7 @@ export class ImageComponent implements OnInit {
 
   constructor(
     private snackbarService: SnackbarService,
+    private credentialsService: CredentialsService,
     private imageClient: ImageClient,
     private modalService: ModalService,
     public dialog: MatDialog

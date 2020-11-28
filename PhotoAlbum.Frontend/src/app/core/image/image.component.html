@@ -15,6 +15,7 @@
         <mat-icon>get_app</mat-icon>
       </a>
       <button
+        *ngIf="credentialsService.isAuthenticated()"
         mat-icon-button
         matTooltip="Comments"
         (click)="openCommentsDialog()"
