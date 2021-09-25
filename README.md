@@ -1,3 +1,22 @@
+# Photo Album
+
+This is a website for managing and sharing photo albums, built with ASP.NET Core backend and Angular frontend.
+
+## Features
+
+- User management with groups support
+- Upload and share photos privately or publicly
+- Create and manage albums of pictures
+- Download whole albums in a compressed format
+- Assign and search between various metadata for images
+- Write comments on images
+
+## Screenshots
+
+<img src="https://user-images.githubusercontent.com/43880678/134766483-f6f564d9-bd14-42d4-b5bb-ae7134fedd9b.png" width="100%">
+<img src="https://user-images.githubusercontent.com/43880678/134766505-c8a1d848-23f2-4e7c-bb52-de281c4caecd.png" width="100%">
+<img src="https://user-images.githubusercontent.com/43880678/134766518-d75c2b70-5398-4cd2-816a-283f4a53e385.png" width="100%">
+
 ## How to start up project
 
 1. Run `npm install` from the `PhotoAlbum.Frontend` folder
@@ -19,7 +38,7 @@
 
 - `npm install`: initialize `node_modules`
 - `npm start`: start frontend on `http://localhost:4200/`
-- `npm run swagger`: generates `api/app.generated.ts`
+- `npm run swagger`: generate `api/app.generated.ts`
 - `npm ci`: reinitialize `node_modules`
 - design: https://material.angular.io/
 - routing: https://medium.com/@shairez/angular-routing-a-better-pattern-for-large-scale-apps-f2890c952a18
